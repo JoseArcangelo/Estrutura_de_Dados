@@ -5,3 +5,7 @@
 
 
 <p>Exercicios e atividades feitas na disciplina de Estrutura de dados do curdo de Sistemas de Informação.</p>
+
+
+<h2 align="justify">AUTORES</h2>
+<p>José Arcangelo de Souza Garlet</p>

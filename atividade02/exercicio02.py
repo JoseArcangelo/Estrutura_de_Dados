@@ -16,18 +16,23 @@ def lista_imprimi(lst):
     atual = atual.prox
 
 def separa(lst, n):
-    
-
     atual = lst
-    while atual is not None:
-        if atual.info == n:
+    while True:
+      if atual.info == n:
             break
-        atual = atual.prox
+      atual = atual.prox
     atual.prox = atual.prox
 
+    lst2 = atual.prox
     
-
-    return atual
+    atual = lst
+    while True:
+      if atual.info == n:
+        atual.prox = None
+        break
+      atual = atual.prox
+    
+    return lst, lst2
 
 lst = None
 lst = insere_lista(lst, 50)
@@ -36,11 +41,10 @@ lst = insere_lista(lst, 70)
 lst = insere_lista(lst, 80)
 lst = insere_lista(lst, 90)
 lst = insere_lista(lst, 100)
-lista_imprimi(lst)
-lst2 = separa(lst, 80)
-
+# lista_imprimi(lst)
+lst, lst2 = separa(lst, 80)
 
 print("--Primeira PARTE--")
-
+lista_imprimi(lst)
 print("--SEGUNDA PARTE--")
 lista_imprimi(lst2)

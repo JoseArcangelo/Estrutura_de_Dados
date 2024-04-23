@@ -37,7 +37,7 @@ def fila_insere_inicio(f, v):
     
 def ordena_filas(f1, f2):
   contador = 0
-  f3 = fila_cria(f1.n)
+  f3 = fila_cria(f1.n + f2.n)
 
   while f1.n != contador:
     if f3.n == 0:

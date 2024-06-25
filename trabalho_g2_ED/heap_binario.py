@@ -1,60 +1,96 @@
-# heap minimo
-class heapBinary:
+#heap maximo
+class Nodo:
+    def __init__(self, valor):
+        self.valor = valor
+        self.esq = None
+        self.dir = None
+        self.pai = None
+
+class MaxHeap:
     def __init__(self):
-        self.heap_list = [] 
-        self.count = 0
-        self.min = None
+        self.raiz = None
+        self.tamanho = 0
 
-def ordena_prioridade(heap, tamanho):
-    while tamanho != 0:
-        parent = tamanho // 2 
+def inserir(heap, valor):
+    novo_nodo = Nodo(valor)
+    if heap.raiz is None:
+        heap.raiz = novo_nodo
+    else:
+        inserir_na_posicao_correta(heap.raiz, novo_nodo)
+        heapify_up(novo_nodo, heap)
+    heap.tamanho += 1
+    return heap
 
-        if heap.heap_list[tamanho] < heap.heap_list[parent]:
-            heap.heap_list[tamanho], heap.heap_list[parent] = heap.heap_list[parent], heap.heap_list[tamanho]
-        tamanho -= 1
-    heap.min = heap.heap_list[0]
+def inserir_na_posicao_correta(atual, novo_nodo):
+    fila = [atual]
+    while fila:
+        atual = fila.pop(0)
+        if not atual.esq:
+            atual.esq = novo_nodo
+            novo_nodo.pai = atual
+            return
+        else:
+            fila.append(atual.esq)
+        if not atual.dir:
+            atual.dir = novo_nodo
+            novo_nodo.pai = atual
+            return
+        else:
+            fila.append(atual.dir)
 
-def inserir(heap_min, valor):
-    heap_min.count += 1
-    heap_min.heap_list.append(valor)
-    if heap_min.count == 1:
-        return heap_min
-    ordena_prioridade(heap_min, heap_min.count - 1)
-    return heap_min
+def heapify_up(nodo, heap):
+    while nodo.pai and nodo.valor > nodo.pai.valor:
+        nodo.valor, nodo.pai.valor = nodo.pai.valor, nodo.valor
+        nodo = nodo.pai
 
-def remover(heap_min):
-    print(heap_min.heap_list)
-
-    heap_min.heap_list[0], heap_min.heap_list[-1] = heap_min.heap_list[-1], heap_min.heap_list[0]
+def extrair_maximo(heap):
+    if not heap.raiz:
+        return None
     
-    print(heap_min.heap_list)
-    heap_min.heap_list.pop(-1)
-    
-    print(heap_min.heap_list)
-    
-    heap_min.count -= 1
-    ordena_prioridade(heap_min, heap_min.count - 1)
-    return heap_min
+    valor_maximo = heap.raiz.valor
+    if heap.tamanho == 1:
+        heap.raiz = None
+    else:
+        ultimo_nodo = obter_ultimo_elemento(heap)
+        heap.raiz.valor = ultimo_nodo.valor
+        if ultimo_nodo.pai.esq == ultimo_nodo:
+            ultimo_nodo.pai.esq = None
+        else:
+            ultimo_nodo.pai.dir = None
+        heapify_down(heap.raiz, heap)
+    heap.tamanho -= 1
+    return valor_maximo
 
-def valor_minimo(heap_min):
-    return heap_min.min
+def obter_ultimo_elemento(heap):
+    fila = [heap.raiz]
+    ultimo_nodo = None
+    while fila:
+        ultimo_nodo = fila.pop(0)
+        if ultimo_nodo.esq:
+            fila.append(ultimo_nodo.esq)
+        if ultimo_nodo.dir:
+            fila.append(ultimo_nodo.dir)
+    return ultimo_nodo
 
-heap_min = heapBinary()
-heap_min = inserir(heap_min,10)
-heap_min = inserir(heap_min,9)
-heap_min = inserir(heap_min,8)
-heap_min = inserir(heap_min,7)
-heap_min = inserir(heap_min,6)
-heap_min = inserir(heap_min,5)
+def heapify_down(nodo, heap):
+    while nodo.esq or nodo.dir:
+        if nodo.dir and nodo.dir.valor > nodo.esq.valor:
+            filho_maior = nodo.dir
+        else:
+            filho_maior = nodo.esq
+        if nodo.valor < filho_maior.valor:
+            nodo.valor, filho_maior.valor = filho_maior.valor, nodo.valor
+            nodo = filho_maior
+        else:
+            break
 
-# heap_min = remover(heap_min)
-print(heap_min.heap_list)
-heap_min = remover(heap_min)
+heap = MaxHeap()
+inserir(heap, 10)
+inserir(heap, 20)
+inserir(heap, 5)
 
-# heap_min = remover(heap_min)
-print(heap_min.heap_list)
-
-menor_valor = valor_minimo(heap_min)
-print(menor_valor)
+print(extrair_maximo(heap))  
+print(extrair_maximo(heap))  
+print(extrair_maximo(heap))
 
 

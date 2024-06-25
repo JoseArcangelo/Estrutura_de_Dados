@@ -1,3 +1,4 @@
+#heap minimo
 class heapBinary:
     def __init__(self):
         self.heap_list = []
